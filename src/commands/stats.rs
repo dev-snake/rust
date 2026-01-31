@@ -7,7 +7,7 @@ use crate::ui;
 use crate::utils::{format_bytes, get_extension, should_skip};
 
 pub fn run(path: &str, hidden: bool) -> Result<()> {
-    ui::print_start("Analyzing", path);
+    ui::print_start("Analyzing directory stats", path);
     println!();
 
     let mut total_files = 0u64;

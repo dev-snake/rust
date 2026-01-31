@@ -56,7 +56,6 @@ pub fn run(path: &str, dirs_only: bool, files_only: bool, delete: bool) -> Resul
         }
     }
 
-    // Print results
     if empty_files.is_empty() && empty_dirs.is_empty() {
         ui::print_success("No empty items found");
         return Ok(());
@@ -65,17 +64,15 @@ pub fn run(path: &str, dirs_only: bool, files_only: bool, delete: bool) -> Resul
     if !empty_files.is_empty() {
         ui::print_section(&format!("Empty Files ({})", empty_files.len()));
         for file in &empty_files {
-            println!("  {} {}", chars::DOT.yellow(), file.display());
+            println!("  {} {}", chars::DOT.bright_yellow(), file.display());
         }
-        println!();
     }
 
     if !empty_dirs.is_empty() {
         ui::print_section(&format!("Empty Directories ({})", empty_dirs.len()));
         for dir in &empty_dirs {
-            println!("  {} {}", chars::DOT.yellow(), dir.display());
+            println!("  {} {}", chars::DOT.bright_yellow(), dir.display());
         }
-        println!();
     }
 
     // Delete if requested
@@ -120,16 +117,14 @@ pub fn run(path: &str, dirs_only: bool, files_only: bool, delete: bool) -> Resul
         println!();
         ui::print_line(50);
         println!(
-            "{} Deleted: {} files, {} directories{}",
-            chars::ARROW.dimmed(),
-            deleted_files.to_string().green().bold(),
-            deleted_dirs.to_string().green().bold(),
-            if errors > 0 {
-                format!(" ({} errors)", errors).red().to_string()
-            } else {
-                String::new()
-            }
+            "{} Deleted: {} files, {} directories",
+            chars::ARROW.bright_black(),
+            deleted_files.to_string().bright_green().bold(),
+            deleted_dirs.to_string().bright_green().bold()
         );
+        if errors > 0 {
+            ui::print_error(&format!("Encountered {} errors during deletion", errors));
+        }
     }
 
     Ok(())

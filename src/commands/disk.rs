@@ -106,8 +106,8 @@ fn analyze_by_directory(
     println!();
     ui::print_info(&format!(
         "Total: {} in {} files",
-        format_bytes(total_size).green().bold(),
-        total_files.to_string().green()
+        format_bytes(total_size).bright_green().bold(),
+        total_files.to_string().bright_green()
     ));
     println!();
 
@@ -133,11 +133,11 @@ fn analyze_by_directory(
 
         println!(
             "  {:>12}  {:>6}  {} {:>5.1}%  {}",
-            format_bytes(dir.size).yellow().bold(),
-            dir.file_count,
+            format_bytes(dir.size).bright_yellow().bold(),
+            dir.file_count.to_string().bright_white(),
             bar,
             percentage,
-            dir.path.dimmed()
+            dir.path.bright_black()
         );
     }
 
@@ -215,7 +215,7 @@ fn analyze_by_type(
     println!();
     ui::print_info(&format!(
         "Total: {}",
-        format_bytes(total_size).green().bold()
+        format_bytes(total_size).bright_green().bold()
     ));
     println!();
 
@@ -240,16 +240,16 @@ fn analyze_by_type(
         );
 
         let ext_display = if ext.extension == "(no ext)" {
-            ext.extension.dimmed().to_string()
+            ext.extension.bright_black().to_string()
         } else {
-            format!(".{}", ext.extension).cyan().to_string()
+            format!(".{}", ext.extension).bright_cyan().to_string()
         };
 
         println!(
             "  {:>8}  {:>12}  {:>6}  {}  {:>5.1}%",
             ext_display,
-            format_bytes(ext.size).yellow().bold(),
-            ext.file_count,
+            format_bytes(ext.size).bright_yellow().bold(),
+            ext.file_count.to_string().bright_white(),
             bar,
             percentage
         );

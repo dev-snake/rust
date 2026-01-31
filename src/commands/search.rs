@@ -22,7 +22,7 @@ pub fn run(
         .case_insensitive(ignore_case)
         .build()?;
 
-    ui::print_start(&format!("Searching for '{}'", pattern.yellow()), path);
+    ui::print_start(&format!("Searching for '{}'", pattern.bright_yellow()), path);
     println!();
 
     let mut total_matches = 0usize;
@@ -55,7 +55,7 @@ pub fn run(
                 if files_only {
                     println!("{}", file_path.display().to_string().green());
                 } else {
-                    println!("{}", file_path.display().to_string().magenta().bold());
+                    println!("{}", file_path.display().to_string().bright_magenta().bold());
                     for m in matches {
                         println!("{}", m);
                     }
@@ -68,12 +68,11 @@ pub fn run(
     }
 
     // Summary
-    ui::print_line(50);
+    ui::print_count(total_matches, "match", "matches");
     println!(
-        "{} {} matches in {} files",
-        chars::ARROW.dimmed(),
-        total_matches.to_string().green().bold(),
-        files_with_matches.to_string().green().bold()
+        "{} found in {} files",
+        chars::ARROW.bright_black(),
+        files_with_matches.to_string().bright_green().bold()
     );
 
     Ok(())
@@ -140,7 +139,7 @@ fn search_file(
         }
 
         if context > 0 && end < lines.len() {
-            results.push(format!("  {}", chars::DOT.repeat(3).dimmed()));
+            results.push(format!("  {}", chars::DOT.repeat(3).bright_black()));
         }
     }
 

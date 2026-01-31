@@ -5,11 +5,10 @@ use glob::Pattern;
 use std::cmp::Ordering;
 use walkdir::WalkDir;
 
-use crate::ui::{self, chars};
+use crate::ui;
 use crate::utils::{format_bytes, get_extension};
 
 struct FileInfo {
-    path: String,
     name: String,
     size: u64,
     modified: DateTime<Local>,
@@ -64,7 +63,6 @@ pub fn run(
             .unwrap_or_else(Local::now);
 
         files.push(FileInfo {
-            path: entry_path.display().to_string(),
             name,
             size,
             modified,
@@ -103,21 +101,21 @@ pub fn run(
     if long {
         println!(
             "  {:>12}  {:>19}  {}",
-            "SIZE".cyan().bold(),
-            "MODIFIED".cyan().bold(),
-            "NAME".cyan().bold()
+            "SIZE".bright_cyan().bold(),
+            "MODIFIED".bright_cyan().bold(),
+            "NAME".bright_cyan().bold()
         );
-        ui::print_line(60);
+        ui::print_line(70);
 
         for file in &files {
             let size_str = if file.is_dir {
-                format!("{:>12}", "<DIR>".blue())
+                format!("{:>12}", "<DIR>".bright_blue())
             } else {
-                format!("{:>12}", format_bytes(file.size))
+                format!("{:>12}", format_bytes(file.size).bright_yellow())
             };
-
+ 
             let name_str = if file.is_dir {
-                format!("{}/", file.name).blue().bold().to_string()
+                format!("{}/", file.name).bright_blue().bold().to_string()
             } else {
                 file.name.clone()
             };
@@ -125,7 +123,7 @@ pub fn run(
             println!(
                 "  {}  {}  {}",
                 size_str,
-                file.modified.format("%Y-%m-%d %H:%M:%S").to_string().dimmed(),
+                file.modified.format("%Y-%m-%d %H:%M:%S").to_string().bright_black(),
                 name_str
             );
         }
@@ -139,7 +137,7 @@ pub fn run(
             print!("  ");
             for file in chunk {
                 let name = if file.is_dir {
-                    format!("{}/", file.name).blue().bold().to_string()
+                    format!("{}/", file.name).bright_blue().bold().to_string()
                 } else {
                     file.name.clone()
                 };
@@ -150,11 +148,7 @@ pub fn run(
     }
 
     println!();
-    println!(
-        "{} {} items",
-        chars::ARROW.dimmed(),
-        files.len().to_string().green().bold()
-    );
+    ui::print_count(files.len(), "item", "items");
 
     Ok(())
 }

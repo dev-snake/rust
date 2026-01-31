@@ -4,14 +4,14 @@ use colored::*;
 use std::time::SystemTime;
 use walkdir::WalkDir;
 
-use crate::ui::{self, chars};
+use crate::ui;
 use crate::utils::{format_bytes, parse_duration, should_skip};
 
 pub fn run(path: &str, within: &str, top: usize) -> Result<()> {
     let seconds = parse_duration(within)?;
     let cutoff = SystemTime::now() - std::time::Duration::from_secs(seconds);
 
-    ui::print_start(&format!("Finding files modified within {}", within.green()), path);
+    ui::print_start(&format!("Finding files modified within {}", within.bright_green()), path);
     println!();
 
     let mut recent_files: Vec<(String, u64, DateTime<Local>)> = Vec::new();
@@ -55,9 +55,9 @@ pub fn run(path: &str, within: &str, top: usize) -> Result<()> {
     // Table header
     println!(
         "  {:>19}  {:>12}  {}",
-        "MODIFIED".cyan().bold(),
-        "SIZE".cyan().bold(),
-        "FILE".cyan().bold()
+        "MODIFIED".bright_cyan().bold(),
+        "SIZE".bright_cyan().bold(),
+        "FILE".bright_cyan().bold()
     );
     ui::print_line(80);
 
@@ -78,25 +78,19 @@ pub fn run(path: &str, within: &str, top: usize) -> Result<()> {
 
         let time_str = format!(
             "{} {}",
-            modified.format("%Y-%m-%d %H:%M").to_string().dimmed(),
-            format!("({})", relative_time).yellow()
+            modified.format("%Y-%m-%d %H:%M").to_string().bright_black(),
+            format!("({})", relative_time).bright_yellow()
         );
 
         println!(
             "  {}  {:>12}  {}",
             time_str,
-            format_bytes(*size).dimmed(),
+            format_bytes(*size).bright_yellow(),
             file_path
         );
     }
 
-    println!();
-    ui::print_line(80);
-    println!(
-        "{} {} recent files",
-        chars::ARROW.dimmed(),
-        recent_files.len().to_string().green().bold()
-    );
+    ui::print_count(recent_files.len(), "recent file", "recent files");
 
     Ok(())
 }

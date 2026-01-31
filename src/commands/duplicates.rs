@@ -34,6 +34,7 @@ pub fn run(
     delete: bool,
 ) -> Result<()> {
     ui::print_start("Scanning for duplicates", path);
+    println!();
 
     // Step 1: Collect all files and group by size
     let mut size_groups: HashMap<u64, Vec<PathBuf>> = HashMap::new();
@@ -62,8 +63,9 @@ pub fn run(
     }
 
     println!(
-        "  {} files indexed",
-        file_count.to_string().green()
+        "  {} {} files indexed",
+        chars::BULLET.bright_blue(),
+        file_count.to_string().bright_green().bold()
     );
 
     // Step 2: Filter groups with more than one file (potential duplicates)
@@ -79,8 +81,9 @@ pub fn run(
 
     let total_to_hash: usize = potential_dupes.iter().map(|(_, f)| f.len()).sum();
     println!(
-        "  {} candidates with matching sizes",
-        total_to_hash.to_string().yellow()
+        "  {} {} candidates with matching sizes",
+        chars::BULLET.bright_yellow(),
+        total_to_hash.to_string().bright_yellow().bold()
     );
 
     // Step 3: Calculate hashes for potential duplicates
@@ -155,11 +158,11 @@ pub fn run(
         println!();
         println!(
             "  {} {} files, {} each",
-            chars::BULLET.yellow(),
-            files.len().to_string().yellow().bold(),
-            format_bytes(size).dimmed()
+            chars::BULLET.bright_yellow(),
+            files.len().to_string().bright_yellow().bold(),
+            format_bytes(size).bright_black()
         );
-        println!("    {} {}", "hash:".dimmed(), &hash[..16].dimmed());
+        println!("    {} {}", "hash:".bright_black(), &hash[..16].bright_black());
 
         for (i, file) in files.iter().enumerate() {
             let (prefix, label) = if i == 0 {

@@ -2,14 +2,14 @@ use anyhow::Result;
 use colored::*;
 use walkdir::WalkDir;
 
-use crate::ui::{self, chars};
+use crate::ui;
 use crate::utils::{format_bytes, parse_size, should_skip};
 
 pub fn run(path: &str, size_str: &str, top: usize) -> Result<()> {
     let min_size = parse_size(size_str)?;
 
     ui::print_start(
-        &format!("Finding large files (>= {})", format_bytes(min_size).green()),
+        &format!("Finding large files (>= {})", format_bytes(min_size).bright_green()),
         path,
     );
     println!();
@@ -48,44 +48,37 @@ pub fn run(path: &str, size_str: &str, top: usize) -> Result<()> {
 
     ui::print_info(&format!(
         "Found {} files, total {}",
-        large_files.len().to_string().green().bold(),
-        format_bytes(total_size).green().bold()
+        large_files.len().to_string().bright_green().bold(),
+        format_bytes(total_size).bright_green().bold()
     ));
     println!();
 
     // Table header
     println!(
         "  {:>4}  {:>12}  {:20}  {}",
-        "#".dimmed(),
-        "SIZE".cyan().bold(),
+        "#".bright_black(),
+        "SIZE".bright_cyan().bold(),
         "".to_string(),
-        "FILE".cyan().bold()
+        "FILE".bright_cyan().bold()
     );
     ui::print_line(80);
 
     for (i, (file_path, size)) in large_files.iter().enumerate() {
-        let rank = format!("{:>4}", i + 1).dimmed();
-        let size_str = format!("{:>12}", format_bytes(*size)).yellow().bold();
+        let rank = format!("{:>4}", i + 1).bright_black();
+        let size_str = format!("{:>12}", format_bytes(*size)).bright_yellow().bold();
 
         let bar_width = 20;
         let filled = ((*size as f64 / max_size as f64) * bar_width as f64) as usize;
         let bar = format!(
             "{}{}",
-            "━".repeat(filled).green(),
-            "─".repeat(bar_width - filled).dimmed()
+            "━".repeat(filled).bright_green(),
+            "─".repeat(bar_width - filled).bright_black()
         );
 
         println!("  {}  {}  {}  {}", rank, size_str, bar, file_path);
     }
 
-    println!();
-    ui::print_line(80);
-    println!(
-        "{} {} files totaling {}",
-        chars::ARROW.dimmed(),
-        large_files.len().to_string().green().bold(),
-        format_bytes(total_size).green().bold()
-    );
+    ui::print_count(large_files.len(), "large file", "large files");
 
     Ok(())
 }
