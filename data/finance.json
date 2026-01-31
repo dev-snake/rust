@@ -1,0 +1,40 @@
+{
+  "transactions": [
+    {
+      "id": "131869b5-18c3-4eba-ba4d-7e8de97c0457",
+      "transaction_type": "Income",
+      "category": "Salary",
+      "amount": 10000.0,
+      "description": "ăn chơi",
+      "date": "2026-01-30T16:17:53.100626200+07:00",
+      "tags": []
+    },
+    {
+      "id": "4a902f8d-7f6c-47e4-9d24-3afc5495df43",
+      "transaction_type": "Expense",
+      "category": "Shopping",
+      "amount": 999999999999.0,
+      "description": "f",
+      "date": "2026-01-30T16:19:22.285942200+07:00",
+      "tags": []
+    },
+    {
+      "id": "92a51d86-5f79-4ea5-85cc-50d83d891683",
+      "transaction_type": "Expense",
+      "category": "Transport",
+      "amount": 2.0,
+      "description": "2",
+      "date": "2026-01-30T16:20:27.333619900+07:00",
+      "tags": []
+    }
+  ],
+  "budgets": [
+    {
+      "category": "Food",
+      "limit": 100000.0,
+      "month": 1,
+      "year": 2026
+    }
+  ],
+  "saving_goals": []
+}

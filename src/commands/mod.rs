@@ -1,0 +1,11 @@
+pub mod compare;
+pub mod disk;
+pub mod duplicates;
+pub mod empty;
+pub mod hash;
+pub mod large;
+pub mod list;
+pub mod recent;
+pub mod rename;
+pub mod search;
+pub mod stats;
